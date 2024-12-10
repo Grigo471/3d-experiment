@@ -1,0 +1,1 @@
+export const LINE_NB_POINTS = 12000;
