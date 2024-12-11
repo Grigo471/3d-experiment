@@ -1,10 +1,8 @@
 import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-three/drei"
-import { Rings } from "./Rings"
 import { Group, PerspectiveCamera as ThreePerspectiveCamera, Vector2 } from "three"
 import { useEffect, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
 import { linePoints } from "../consts/curve"
-import { SpotLights } from "./Spotlights"
 import { Tape } from "./Tape"
 import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
 import { BlendFunction } from "postprocessing"
@@ -47,7 +45,7 @@ export const Experience = () => {
         // );
 
         // cameraGroup.current?.quaternion?.slerp(targetCameraQuaternion, delta * 2);
-        cameraGroup.current?.position?.lerp(curPoint, delta * 24);
+        cameraGroup.current?.position?.lerp(curPoint, delta);
 
         // textSections.forEach((textSection) => {
         //     if (!cameraGroup.current) return;
@@ -76,12 +74,17 @@ export const Experience = () => {
                 <PerspectiveCamera 
                     position={[0, 2, 0]} 
                     ref={camera} 
-                    fov={10} 
-
-                    makeDefault />
+                    fov={1} 
+                    makeDefault>
+                    <hemisphereLight 
+                        // args={[0xffffbb, 0x887979, 0.9]}
+                        position={[0, 2, 0]}
+                    />  
+                </PerspectiveCamera>
+                
             </group>
 
-            <color args={[0, 0, 0]} attach="background" />
+            {/* <color args={[0, 0, 0]} attach="background" /> */}
 
             <CubeCamera resolution={256} frames={Infinity}>
                 {(texture) => (
@@ -92,7 +95,7 @@ export const Experience = () => {
             </CubeCamera>
 
             <Tape />
-            <SpotLights />
+            {/* <SpotLights /> */}
             {/* <Rings /> */}
             <Tube />
             <TriangularTube />

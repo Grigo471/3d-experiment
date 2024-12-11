@@ -45,9 +45,10 @@ export const triangleTubePoints = () => {
     const points = [];;
 
     for (let i = 0; i < 5; i += 1) {
-        points.push(new Vector3(0, 0, -3 * (i / 4)));
+        points.push(new Vector3(0, 0, -30 * (i / 4)));
     }
-    points[4].y = -0.04;
+
+    // points[4].y = -0.04;
 
     return points;
 }
