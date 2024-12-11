@@ -1,49 +1,25 @@
 import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-three/drei"
-import { Ground } from "./Ground"
-import { Boxes } from "./Boxes"
 import { Rings } from "./Rings"
-import { CatmullRomCurve3, Euler, Group, Quaternion, Shape, Vector3 } from "three"
-import { useMemo, useRef } from "react"
-import { LINE_NB_POINTS } from "../consts/consts"
+import { Group, PerspectiveCamera as ThreePerspectiveCamera, Vector2 } from "three"
+import { useEffect, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
+import { linePoints } from "../consts/curve"
+import { SpotLights } from "./Spotlights"
+import { Tape } from "./Tape"
+import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
+import { BlendFunction } from "postprocessing"
+import { Tube } from "./Tube"
+import { TextSections } from "./TextSections"
 
 export const Experience = () => {
 
     const cameraGroup = useRef<Group>(null);
+    const camera = useRef<ThreePerspectiveCamera>(null);
     const scroll = useScroll();
 
-    const curve = useMemo(() => {
-        return new CatmullRomCurve3(
-            [
-                new Vector3(0, 0, 0),
-                new Vector3(0, 0, -10),
-                new Vector3(-2, 0, -20),
-                new Vector3(-3, 0, -30),
-                new Vector3(0, 0, -40),
-                new Vector3(5, 0, -50),
-                new Vector3(7, 0, -60),
-                new Vector3(5, 0, -70),
-                new Vector3(0, 0, -80),
-                new Vector3(0, 0, -90),
-                new Vector3(0, 0, -100),
-            ],
-            false,
-            "catmullrom",
-            0.5
-        );
-    }, []);
-
-    const linePoints = useMemo(() => {
-        return curve.getPoints(LINE_NB_POINTS);
-    }, [curve]);
-
-    const shape = useMemo(() => {
-        const shape = new Shape();
-        shape.moveTo(0, -0.2);
-        shape.lineTo(0, 0.2);
-
-        return shape;
-    }, [curve]);
+    useEffect(() => {
+        camera.current?.lookAt(0, 2, 0)
+    }, [])
 
     useFrame((_state, delta) => {
         const curPointIndex = Math.min(
@@ -51,29 +27,40 @@ export const Experience = () => {
             linePoints.length - 1
         );
         const curPoint = linePoints[curPointIndex];
-        const pointAhead =
-            linePoints[Math.min(curPointIndex + 1, linePoints.length - 1)];
+        // const pointAhead =
+        //     linePoints[Math.min(curPointIndex + 1, linePoints.length - 1)];
 
-        const xDisplacement = (pointAhead.x - curPoint.x) * 80;
+        // const xDisplacement = (pointAhead.x - curPoint.x) * 100;
+        // const yDisplacement = (pointAhead.y - curPoint.y) * 100;
 
-        // Math.PI / 2 -> LEFT
-        // -Math.PI / 2 -> RIGHT
+        // const angleRotation =
+        //     (xDisplacement < 0 ? 1 : -1) *
+        //     Math.min(Math.abs(xDisplacement), Math.PI / 3);
 
-        const angleRotation =
-            (xDisplacement < 0 ? 1 : -1) *
-            Math.min(Math.abs(xDisplacement), Math.PI / 3);
+        // const targetCameraQuaternion = new Quaternion().setFromEuler(
+        //     new Euler(
+        //         yDisplacement,
+        //         xDisplacement,
+        //         cameraGroup.current?.rotation?.z
+        //     )
+        // );
 
-        const targetCameraQuaternion = new Quaternion().setFromEuler(
-            new Euler(
-                cameraGroup.current?.rotation?.x,
-                angleRotation,
-                cameraGroup.current?.rotation?.z
-            )
-        );
-
-        cameraGroup.current?.quaternion?.slerp(targetCameraQuaternion, delta * 2);
-
+        // cameraGroup.current?.quaternion?.slerp(targetCameraQuaternion, delta * 2);
         cameraGroup.current?.position?.lerp(curPoint, delta * 24);
+
+        // textSections.forEach((textSection) => {
+        //     if (!cameraGroup.current) return;
+        //     const distance = textSection.position.distanceTo(
+        //         cameraGroup.current.position
+        //     );
+
+        //     if (distance < FRICTION_DISTANCE) {
+        //         const targetCameraRailPosition = new Vector3(
+        //             (1 - distance / FRICTION_DISTANCE) * textSection.cameraRailDist, 0, 0
+        //         );
+        //         cameraGroup.current.position.lerp(targetCameraRailPosition, delta);
+        //     }
+        // });
     });
 
     return (
@@ -85,7 +72,11 @@ export const Experience = () => {
             /> */}
 
             <group ref={cameraGroup}>
-                <PerspectiveCamera position={[0, 2, 0]} fov={50} makeDefault />
+                <PerspectiveCamera 
+                    position={[0, 2, 0]} 
+                    ref={camera} 
+                    fov={50} 
+                    makeDefault />
             </group>
 
             <color args={[0, 0, 0]} attach="background" />
@@ -98,44 +89,33 @@ export const Experience = () => {
                 )}
             </CubeCamera>
 
-            <spotLight
-                color={[1, 0.25, 0.7]}
-                intensity={150}
-                angle={0.6}
-                penumbra={0.5}
-                position={[5, 5, 0]}
-                castShadow
-                shadow-bias={-0.0001}
-            />
-            <spotLight
-                color={[0.14, 0.5, 1]}
-                intensity={200}
-                angle={0.6}
-                penumbra={0.5}
-                position={[-5, 5, 0]}
-                castShadow
-                shadow-bias={-0.0001}
-            />
-
-            <group position-y={1}>
-                <mesh>
-                    <extrudeGeometry
-                        args={[
-                            shape,
-                            {
-                                steps: LINE_NB_POINTS,
-                                bevelEnabled: false,
-                                extrudePath: curve,
-                            },
-                        ]}
-                    />
-                    <meshStandardMaterial color={"white"} />
-                </mesh>
-            </group>
-
-            <Ground />
-            <Boxes />
+            <Tape />
+            <SpotLights />
+            {/* <Ground /> */}
+            {/* <Boxes /> */}
             <Rings />
+            <Tube />
+
+            <TextSections />
+
+            <EffectComposer>
+                {/* <DepthOfField focusDistance={0.0035} focalLength={0.01} bokehScale={3} height={480} /> */}
+                <Bloom
+                    blendFunction={BlendFunction.ADD}
+                    intensity={1.3} // The bloom intensity.
+                    width={300} // render width
+                    height={300} // render height
+                    kernelSize={5} // blur kernel size
+                    luminanceThreshold={0.15} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                    luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
+                />
+                <ChromaticAberration
+                    radialModulation
+                    modulationOffset={1}
+                    blendFunction={BlendFunction.NORMAL} // blend mode
+                    offset={new Vector2(0.0005, 0.0012)} // color offset
+                />
+            </EffectComposer>
         </>
     )
 }

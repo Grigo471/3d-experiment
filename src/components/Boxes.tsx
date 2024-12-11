@@ -27,7 +27,7 @@ function Box({ color }: { color: Color}) {
     }
 
     useFrame(
-        (state, delta) => {
+        (_, delta) => {
             time.current += delta * 1.2;
             const newZ = position.z - (time.current);
 
@@ -63,13 +63,12 @@ function Box({ color }: { color: Color}) {
 }
 
 export function Boxes() {
-    const [arr] = useState(() => {
-        const a = [];
-        for (let i = 0; i < 100; i++) a.push(0);
-        return a;
-    });
-
     return <>
-        {arr.map((e, i) => <Box key={i} color={i % 2 === 0 ? new Color(0.4, 0.1, 0.1) : new Color(0.05, 0.15, 0.4)} />)}
+        {Array(100).fill(0).map((_, i) => 
+            <Box 
+                key={i} 
+                color={i % 2 === 0 ? new Color(0.4, 0.1, 0.1) : new Color(0.05, 0.15, 0.4)} 
+            />)
+        }
     </>
 }

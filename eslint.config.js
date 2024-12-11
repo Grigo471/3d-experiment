@@ -23,6 +23,7 @@ export default [
             'unused-imports/no-unused-imports': 'error',
             "react/react-in-jsx-scope": "off",
             'react/no-unknown-property': "off",
+            'react/display-name': 'off'
         },
     }
 ];

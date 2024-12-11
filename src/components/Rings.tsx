@@ -4,7 +4,7 @@ import { Color, Mesh, MeshStandardMaterial } from "three";
 
 export function Rings() {
     const itemsRef = useRef<Mesh[]>([]);
-    const radius = 3.35;
+    const radius = 1;
 
     useFrame((state) => {
         const elapsed = state.clock.getElapsedTime();
@@ -32,7 +32,7 @@ export function Rings() {
 
     return (
         <>
-            {Array(14).fill(0).map((v, i) => (
+            {Array(14).fill(0).map((_, i) => (
                 <mesh
                     castShadow
                     receiveShadow
