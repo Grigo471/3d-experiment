@@ -10,6 +10,7 @@ import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postpro
 import { BlendFunction } from "postprocessing"
 import { Tube } from "./Tube"
 import { TextSections } from "./TextSections"
+import { TriangularTube } from "./TriangularTube"
 
 export const Experience = () => {
 
@@ -75,7 +76,8 @@ export const Experience = () => {
                 <PerspectiveCamera 
                     position={[0, 2, 0]} 
                     ref={camera} 
-                    fov={50} 
+                    fov={10} 
+
                     makeDefault />
             </group>
 
@@ -91,10 +93,9 @@ export const Experience = () => {
 
             <Tape />
             <SpotLights />
-            {/* <Ground /> */}
-            {/* <Boxes /> */}
-            <Rings />
+            {/* <Rings /> */}
             <Tube />
+            <TriangularTube />
 
             <TextSections />
 
