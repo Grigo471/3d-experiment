@@ -8,6 +8,7 @@ import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postpro
 import { BlendFunction } from "postprocessing"
 import { Tube } from "./Tube"
 import { TextSections } from "./TextSections"
+import { AnimatedPlane } from "./AnimatedPlain"
 import { TriangularTube } from "./TriangularTube"
 
 export const Experience = () => {
@@ -65,16 +66,15 @@ export const Experience = () => {
     return (
         <>
             {/* <OrbitControls
-                target={[0, 0.35, 0]}
-                maxPolarAngle={1.45}
-                enableZoom={false}
+                // target={[0, 0.35, 0]}
+                // maxPolarAngle={1.45}
             /> */}
 
             <group ref={cameraGroup}>
                 <PerspectiveCamera 
                     position={[0, 2, 0]} 
                     ref={camera} 
-                    fov={1} 
+                    fov={20} 
                     makeDefault>
                     <hemisphereLight 
                         // args={[0xffffbb, 0x887979, 0.9]}
@@ -84,7 +84,7 @@ export const Experience = () => {
                 
             </group>
 
-            {/* <color args={[0, 0, 0]} attach="background" /> */}
+            <color args={[0, 0, 0]} attach="background" />
 
             <CubeCamera resolution={256} frames={Infinity}>
                 {(texture) => (
@@ -94,12 +94,13 @@ export const Experience = () => {
                 )}
             </CubeCamera>
 
-            <Tape />
+            {/* <Tape /> */}
             {/* <SpotLights /> */}
             {/* <Rings /> */}
-            <Tube />
-            <TriangularTube />
+            {/* <Tube /> */}
+            {/* <TriangularTube /> */}
 
+            <AnimatedPlane />
             <TextSections />
 
             <EffectComposer>
