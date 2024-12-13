@@ -3,7 +3,7 @@ import { triangleTubeCurve } from "./curve";
 import { ImprovedNoise } from "three/examples/jsm/Addons.js";
 
 const createTriangularTubeGeometry = () => {
-    const geometry = new TubeGeometry(triangleTubeCurve, 120, 0.02, 3, false);
+    const geometry = new TubeGeometry(triangleTubeCurve, 120, 1, 3, false);
     const colors = [];
     const vertices = geometry.getAttribute('position').array;
 
