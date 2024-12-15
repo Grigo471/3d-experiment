@@ -1,15 +1,12 @@
-import { CubeCamera, Environment, PerspectiveCamera, Text3D, useScroll } from "@react-three/drei"
-import { Color, Group, MeshBasicMaterial, PerspectiveCamera as ThreePerspectiveCamera, Vector2 } from "three"
-import { useRef } from "react"
+import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-three/drei"
+import { Group, Shape, PerspectiveCamera as ThreePerspectiveCamera, Vector2, Vector3 } from "three"
+import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { linePoints } from "../consts/curve"
 import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
 import { BlendFunction } from "postprocessing"
-import { TextSections } from "./TextSections"
-import { AnimatedPlane } from "./AnimatedPlain"
-import { TriangularTube } from "./TriangularTube"
 import { Background } from "./Background"
-import { StartingTube } from "./StartingTube"
+import { Tape } from "./Tape"
+import { linePoints, lookAtCurve, lookAtPoints } from "../consts/curve"
 
 
 export const Experience = () => {
@@ -18,17 +15,28 @@ export const Experience = () => {
     const camera = useRef<ThreePerspectiveCamera>(null);
     const scroll = useScroll();
 
+    const tapeShape = useMemo(() => {
+        const shape = new Shape();
+        shape.moveTo(0, -0.1);
+        shape.lineTo(0, 0.1);
+    
+        return shape;
+    }, []);
+
     // useEffect(() => {
     //     camera.current?.lookAt(0, 0, -20)
     // }, [])
 
-    useFrame(() => {
-
+    useFrame(({ camera }) => {
         const currPointIndex = Math.min(
             Math.round(scroll.offset * linePoints.length),
             linePoints.length - 1
         );
-        // const pointAhead = linePoints[Math.min(currPointIndex + 1, linePoints.length - 1)]
+        const currLookatIndex = Math.min(
+            Math.round(scroll.offset * lookAtPoints.length),
+            lookAtPoints.length - 1
+        );
+        const lookAtPoint = lookAtPoints[currLookatIndex + 1000];
 
         const currPoint = linePoints[currPointIndex];
 
@@ -50,6 +58,7 @@ export const Experience = () => {
 
         // cameraGroup.current?.quaternion?.slerp(targetCameraQuaternion, delta);
         cameraGroup.current?.position.lerp(currPoint, 0.1);
+        camera.lookAt(lookAtPoint);
     });
 
     return (
@@ -59,18 +68,26 @@ export const Experience = () => {
             // maxPolarAngle={1.45}
                 enableZoom={false}
             /> */}
-
+            {/* 
             <Text3D 
                 font={'../../public/fonts/3dfont.json'}
                 height={1}
                 size={2}
-                position={[-1, -1, -100]}
+                position={[-1, -1, sectionsCurvesParams[Sections.START].points[1].z / 2]}
                 material={new MeshBasicMaterial({color: 'yellow'})}
             >
                 G
-            </Text3D>
+            </Text3D> */}
 
             <group ref={cameraGroup}>
+                {/* <Stars
+                    count={2000}
+                    fade
+                    speed={1}
+                    radius={50}
+                    depth={50}
+                    saturation={0}
+                /> */}
                 <PerspectiveCamera 
                     position={[0, 0, 0]} 
                     ref={camera} 
@@ -96,15 +113,35 @@ export const Experience = () => {
                 )}
             </CubeCamera>
 
-            {/* <Tape /> */}
+            <mesh 
+                castShadow 
+                receiveShadow
+                position={new Vector3(0, -1, 0)}
+            >
+                <extrudeGeometry
+                    args={[
+                        tapeShape,
+                        // undefined,
+                        {
+                            steps: 100,
+                            extrudePath: lookAtCurve,
+                        },
+                    ]}
+                />
+                <meshStandardMaterial
+                    color={"white"}
+                />
+            </mesh>
+
+            <Tape />
             {/* <SpotLights /> */}
             {/* <Rings /> */}
             {/* <Tube /> */}
-            <TriangularTube />
+            {/* <TriangularTube /> */}
 
-            <StartingTube />
+            {/* <StartingTube /> */}
 
-            <AnimatedPlane
+            {/* <AnimatedPlane
                 position={[0, -10, -1000]}
                 width={300}
                 height={2000}
@@ -115,8 +152,8 @@ export const Experience = () => {
                 color={new Color('#2de2e6')}
                 amplitude={10}
                 animationSpeeds={[0.2, 0.1, 0.02, 0.01]}
-            />
-            <TextSections />
+            /> */}
+            {/* <TextSections /> */}
 
             <EffectComposer>
                 {/* <DepthOfField focusDistance={0.0035} focalLength={0.01} bokehScale={3} height={480} /> */}
