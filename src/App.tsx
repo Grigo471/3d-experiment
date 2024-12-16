@@ -8,7 +8,7 @@ function App() {
     return (
         <React.Suspense fallback={null}>
             <Canvas shadows>
-                <ScrollControls pages={20} damping={0.5}>
+                <ScrollControls pages={20} damping={0.25}>
                     <Experience />
                 </ScrollControls>
             </Canvas>

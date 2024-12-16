@@ -2,12 +2,11 @@ import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-th
 import { Group, Shape, PerspectiveCamera as ThreePerspectiveCamera, Vector2, Vector3 } from "three"
 import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
-import { BlendFunction } from "postprocessing"
 import { Background } from "./Background"
-import { Tape } from "./Tape"
 import { linePoints, lookAtCurve, lookAtPoints } from "../consts/curve"
 import { Rainbow } from "../sections/Rainbow/Rainbow"
+import { Bloom, ChromaticAberration, DepthOfField, EffectComposer } from "@react-three/postprocessing"
+import { BlendFunction } from "postprocessing"
 
 
 export const Experience = () => {
@@ -29,14 +28,17 @@ export const Experience = () => {
             Math.round(scroll.offset * linePoints.length),
             linePoints.length - 1
         );
-        const currLookatIndex = Math.min(
-            Math.round(scroll.offset * lookAtPoints.length),
-            lookAtPoints.length - 1
-        );
-        const lookAtPoint = lookAtPoints[currLookatIndex];
         const currPoint = linePoints[currPointIndex];
         cameraGroup.current?.position.lerp(currPoint, 0.1);
-        camera.lookAt(lookAtPoint);
+        if (cameraGroup.current && cameraGroup.current.position.z > -60) {
+            const currLookatIndex = Math.min(
+                Math.round(scroll.offset * lookAtPoints.length),
+                lookAtPoints.length - 1
+            );
+            const lookAtPoint = lookAtPoints[currLookatIndex];
+            camera.lookAt(lookAtPoint);
+        }
+        
     });
 
     return (
@@ -71,10 +73,10 @@ export const Experience = () => {
                     ref={camera} 
                     fov={50} 
                     makeDefault>
-                    <hemisphereLight 
-                    // args={[0xffffbb, 0x887979, 0.9]}
+                    {/* <hemisphereLight
+                        args={['red', 'blue', 0.1]}
                         position={[0, 2, 0]}
-                    />  
+                    />   */}
                 </PerspectiveCamera>
                 <Background />
             </group>
@@ -110,8 +112,6 @@ export const Experience = () => {
             </mesh>
 
             <Rainbow />
-
-            <Tape />
             {/* <SpotLights /> */}
             {/* <Rings /> */}
             {/* <Tube /> */}
@@ -134,14 +134,14 @@ export const Experience = () => {
             {/* <TextSections /> */}
 
             <EffectComposer>
-                {/* <DepthOfField focusDistance={0.0035} focalLength={0.01} bokehScale={3} height={480} /> */}
+                <DepthOfField focusDistance={0.0035} focalLength={0.01} bokehScale={3} height={480} />
                 <Bloom
                     blendFunction={BlendFunction.ADD}
-                    intensity={1.3} // The bloom intensity.
+                    intensity={0.5} // The bloom intensity.
                     width={300} // render width
                     height={300} // render height
                     kernelSize={5} // blur kernel size
-                    luminanceThreshold={0.15} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                    luminanceThreshold={0.5} // luminance threshold. Raise this value to mask out darker elements in the scene.
                     luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
                 />
                 <ChromaticAberration

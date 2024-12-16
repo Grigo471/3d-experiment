@@ -71,7 +71,7 @@ export const TriangularTube = () => {
     );
 
     return (
-        <mesh position={[0, 0, 0]} geometry={triangularTubeGeometry}>
+        <mesh position={[0, 0, -48]} geometry={triangularTubeGeometry}>
             <meshStandardMaterial
                 side={BackSide}
                 vertexColors

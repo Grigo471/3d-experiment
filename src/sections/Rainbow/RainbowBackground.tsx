@@ -6,7 +6,7 @@ import { ImprovedNoise } from "three/examples/jsm/Addons.js";
 import { hslToRgb } from "../../utils/hslToRgb";
 import { linePoints } from "../../consts/curve";
 
-const stops = [0.1, 0.5, 0.6, 0.9];
+const stops = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 
 const getCanvas = () => {
     const canvas = document.createElement('canvas')
@@ -38,7 +38,7 @@ export const RainbowBackground = () => {
             const h = Math.floor(Math.abs(
                 (new ImprovedNoise().noise(
                     i  + curPointIndex * 0.0001, 
-                    i + curPointIndex * 0.0001, 
+                    i + 0.1 + curPointIndex * 0.0001, 
                     0
                 ) * 8000) * 0.07 + 180
             )) / 360;
@@ -57,9 +57,9 @@ export const RainbowBackground = () => {
     return (
         <>
             <Sphere
-                scale={[100, 100, 100]}
+                scale={[60, 60, 60]}
             >
-                <meshBasicMaterial side={BackSide}>
+                <meshBasicMaterial opacity={0.1} side={BackSide}>
                     <canvasTexture ref={ref} colorSpace={gl.outputColorSpace} args={[canvas]} attach="map" />
                 </meshBasicMaterial>
             </Sphere>
