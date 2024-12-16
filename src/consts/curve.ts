@@ -16,13 +16,13 @@ export const sectionsCurvesParams: Record<Sections, CurveParams> = {
     [Sections.RAINBOW]: {
         points: [
             new Vector3(0, 0, 0),
-            new Vector3(2, 0, -5),
+            new Vector3(0, 0, -5),
             new Vector3(3, 0, -10),
             new Vector3(1, 1, -12),
             new Vector3(0, 0, -14),
             new Vector3(-1, 0, -18),
             new Vector3(0, 1, -20),
-            new Vector3(5, 2, -22),
+            new Vector3(5, 0, -22),
             new Vector3(6, -2, -24),
         ],
         closed: false,
@@ -53,21 +53,13 @@ export const sectionsCurvesParams: Record<Sections, CurveParams> = {
 }
 
 export const lookAtCurve = new CatmullRomCurve3([
-    new Vector3(0, 0, 0),
-    new Vector3(2, 0, -5),
-    new Vector3(3, 0, -10),
-    new Vector3(1, 1, -12),
-    new Vector3(0, 0, -14),
-    new Vector3(-1, 0, -18),
-    new Vector3(0, 1, -20),
-    new Vector3(5, 2, -22),
-    new Vector3(6, -2, -24),
-    // new Vector3(-5, 1, -10),
-    // new Vector3(8, 3, -15),
-    // new Vector3(3, 4, -20),
-    // new Vector3(1, 2, -30),
-    // new Vector3(6, 2, -24),
-    // new Vector3(7, -24, -24),
+    new Vector3(0, 0, -5),
+    new Vector3(-2, 1, -10),
+    new Vector3(0, 3, -15),
+    new Vector3(3, 4, -20),
+    new Vector3(1, 2, -30),
+    new Vector3(6, 2, -24),
+    new Vector3(7, -24, -24),
 ]);
 
 export const lookAtPoints = lookAtCurve.getPoints(12000);

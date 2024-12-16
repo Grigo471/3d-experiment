@@ -2,7 +2,7 @@ import { Sections } from "./types";
 
 export const LINE_NB_POINTS: Record<Sections, number> = {
     // [Sections.START]: 500,
-    [Sections.RAINBOW]: 1200,
+    [Sections.RAINBOW]: 12000,
     // [Sections.RINGS]: 1000,
     // [Sections.RETROWAVE]: 1000,
 };

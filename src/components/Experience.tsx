@@ -7,6 +7,7 @@ import { BlendFunction } from "postprocessing"
 import { Background } from "./Background"
 import { Tape } from "./Tape"
 import { linePoints, lookAtCurve, lookAtPoints } from "../consts/curve"
+import { Rainbow } from "../sections/Rainbow/Rainbow"
 
 
 export const Experience = () => {
@@ -23,10 +24,6 @@ export const Experience = () => {
         return shape;
     }, []);
 
-    // useEffect(() => {
-    //     camera.current?.lookAt(0, 0, -20)
-    // }, [])
-
     useFrame(({ camera }) => {
         const currPointIndex = Math.min(
             Math.round(scroll.offset * linePoints.length),
@@ -36,27 +33,8 @@ export const Experience = () => {
             Math.round(scroll.offset * lookAtPoints.length),
             lookAtPoints.length - 1
         );
-        const lookAtPoint = lookAtPoints[currLookatIndex + 1000];
-
+        const lookAtPoint = lookAtPoints[currLookatIndex];
         const currPoint = linePoints[currPointIndex];
-
-        // const xDisplacement = (pointAhead.x - currPoint.x) * 100;
-        // const yDisplacement = (pointAhead.y - currPoint.y) * 100;
-
-        // const angleRotation =
-        //     (xDisplacement < 0 ? 1 : -1) *
-        //     Math.min(Math.abs(xDisplacement), Math.PI / 3);
-
-        // const targetCameraQuaternion = new Quaternion().setFromEuler(
-        //     new Euler(
-        //         yDisplacement,
-        //         xDisplacement,
-        //         cameraGroup.current?.rotation?.z
-        //     )
-        // );
-
-
-        // cameraGroup.current?.quaternion?.slerp(targetCameraQuaternion, delta);
         cameraGroup.current?.position.lerp(currPoint, 0.1);
         camera.lookAt(lookAtPoint);
     });
@@ -106,9 +84,7 @@ export const Experience = () => {
             <CubeCamera resolution={256} frames={Infinity}>
                 {(texture) => (
                     <>
-                        <Environment map={texture}>
-                
-                        </Environment>
+                        <Environment map={texture} />
                     </>
                 )}
             </CubeCamera>
@@ -132,6 +108,8 @@ export const Experience = () => {
                     color={"white"}
                 />
             </mesh>
+
+            <Rainbow />
 
             <Tape />
             {/* <SpotLights /> */}
