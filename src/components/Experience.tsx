@@ -1,17 +1,15 @@
 import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-three/drei"
-import { Group, Shape, PerspectiveCamera as ThreePerspectiveCamera, Vector2, Vector3 } from "three"
+import { Group, Shape, Vector2, Vector3 } from "three"
 import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
 import { linePoints, lookAtCurve, lookAtPoints } from "../consts/curve"
 import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
 import { BlendFunction } from "postprocessing"
-import { Torus } from "./Torus/Torus"
-
+import { Rainbow } from "../sections/Rainbow/Rainbow"
 
 export const Experience = () => {
 
     const cameraGroup = useRef<Group>(null);
-    const camera = useRef<ThreePerspectiveCamera>(null);
     const scroll = useScroll();
 
     const tapeShape = useMemo(() => {
@@ -23,21 +21,24 @@ export const Experience = () => {
     }, []);
 
     useFrame(({ camera }) => {
+
+        if (!cameraGroup.current) return;
         const currPointIndex = Math.min(
             Math.round(scroll.offset * linePoints.length),
             linePoints.length - 1
         );
         const currPoint = linePoints[currPointIndex];
-        cameraGroup.current?.position.lerp(currPoint, 0.1);
-        if (cameraGroup.current && cameraGroup.current.position.z > -60) {
-            const currLookatIndex = Math.min(
-                Math.round(scroll.offset * lookAtPoints.length),
-                lookAtPoints.length - 1
-            );
-            const lookAtPoint = lookAtPoints[currLookatIndex];
-            camera.lookAt(lookAtPoint);
-        }
-        
+        cameraGroup.current.position.lerp(currPoint, 0.1);
+
+        const currLookatIndex = Math.min(
+            Math.round(scroll.offset * lookAtPoints.length),
+            lookAtPoints.length - 1
+        );
+        const lookAtPoint = lookAtPoints[currLookatIndex];
+        const nextLookAtPoint = lookAtPoints[currLookatIndex + 1];
+
+        const lookAt = lookAtPoint.lerp(nextLookAtPoint, 0.00001);
+        camera.lookAt(lookAtPoint.clone().add(lookAt));
     });
 
     return (
@@ -58,8 +59,6 @@ export const Experience = () => {
                 G
             </Text3D> */}
 
-            <Torus />
-
             <group ref={cameraGroup}>
                 {/* <Stars
                     count={2000}
@@ -71,7 +70,6 @@ export const Experience = () => {
                 /> */}
                 <PerspectiveCamera 
                     position={[0, 0, 0]} 
-                    ref={camera} 
                     fov={50} 
                     makeDefault>
                     {/* <hemisphereLight
@@ -112,7 +110,7 @@ export const Experience = () => {
                 />
             </mesh>
 
-            {/* <Rainbow /> */}
+            <Rainbow />
             {/* <SpotLights /> */}
             {/* <Rings /> */}
             {/* <Tube /> */}

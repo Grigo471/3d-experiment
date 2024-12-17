@@ -68,7 +68,7 @@ export const lookAtCurve = new CatmullRomCurve3([
     new Vector3(0, 0, -70),
 ]);
 
-export const lookAtPoints = lookAtCurve.getPoints(120000);
+export const lookAtPoints = lookAtCurve.getPoints(12000);
 
 export const sectionsCurves = Object.fromEntries(
     Object.entries(sectionsCurvesParams).map(
