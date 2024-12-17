@@ -2,11 +2,10 @@ import { CubeCamera, Environment, PerspectiveCamera, useScroll } from "@react-th
 import { Group, Shape, PerspectiveCamera as ThreePerspectiveCamera, Vector2, Vector3 } from "three"
 import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Background } from "./Background"
 import { linePoints, lookAtCurve, lookAtPoints } from "../consts/curve"
-import { Rainbow } from "../sections/Rainbow/Rainbow"
-import { Bloom, ChromaticAberration, DepthOfField, EffectComposer } from "@react-three/postprocessing"
+import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing"
 import { BlendFunction } from "postprocessing"
+import { Torus } from "./Torus/Torus"
 
 
 export const Experience = () => {
@@ -59,6 +58,8 @@ export const Experience = () => {
                 G
             </Text3D> */}
 
+            <Torus />
+
             <group ref={cameraGroup}>
                 {/* <Stars
                     count={2000}
@@ -78,7 +79,7 @@ export const Experience = () => {
                         position={[0, 2, 0]}
                     />   */}
                 </PerspectiveCamera>
-                <Background />
+                {/* <Background /> */}
             </group>
 
             <color args={[0, 0, 0]} attach="background" />
@@ -111,7 +112,7 @@ export const Experience = () => {
                 />
             </mesh>
 
-            <Rainbow />
+            {/* <Rainbow /> */}
             {/* <SpotLights /> */}
             {/* <Rings /> */}
             {/* <Tube /> */}
@@ -134,10 +135,10 @@ export const Experience = () => {
             {/* <TextSections /> */}
 
             <EffectComposer>
-                <DepthOfField focusDistance={0.0035} focalLength={0.01} bokehScale={3} height={480} />
+                {/* <DepthOfField focusDistance={5} focalLength={0.01} bokehScale={3} height={400} /> */}
                 <Bloom
                     blendFunction={BlendFunction.ADD}
-                    intensity={0.5} // The bloom intensity.
+                    intensity={1} // The bloom intensity.
                     width={300} // render width
                     height={300} // render height
                     kernelSize={5} // blur kernel size

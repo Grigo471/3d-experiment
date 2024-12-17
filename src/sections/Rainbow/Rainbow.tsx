@@ -5,8 +5,6 @@ import { Tape } from "./Tape"
 import { Ruby } from "./Ruby"
 import { FoundationStone } from "./FoundationStone"
 import { Ground } from "../../components/Ground"
-import { Ruins } from "./Ruins"
-import { Ship } from "./Ship"
 import { TriangularTube } from "../../components/TriangularTube"
 
 export const Rainbow = () => {
@@ -20,8 +18,8 @@ export const Rainbow = () => {
             <FoundationStone />
             <Tape />
             <Ground />
-            <Ruins />
-            <Ship />
+            {/* <Ruins /> */}
+            {/* <Ship /> */}
             <TriangularTube />
         </>
     )
