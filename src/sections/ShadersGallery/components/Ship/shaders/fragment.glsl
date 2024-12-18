@@ -2,9 +2,6 @@ varying vec2 vUv;
 
 uniform vec2 uResolution;
 uniform float uTime;
-uniform float uDisplace;
-uniform float uSpread;
-uniform float uNoise;
 
 vec3 palette( float t ) {
     vec3 a = vec3(0.5, 0.5, 0.5);

@@ -45,7 +45,7 @@ export const Ship = () => {
     })
 
     return (
-        <group position={[0, 0, -30,]} rotation={[0, Math.PI * 3 / 4 , 0]}>
+        <group position={[0, 0, 0,]} rotation={[0, Math.PI * 3 / 4 , 0]}>
             <mesh geometry={nodes.ship_light_8angles_1.geometry} material={shaderMaterial} />
             <mesh geometry={nodes.ship_light_8angles_2.geometry} material={shaderMaterial} />
             <mesh geometry={nodes.ship_light_8angles_3.geometry} material={shaderMaterial} />

@@ -1,13 +1,17 @@
-import { Experience } from "./components/Experience/Experience"
-import { Ship } from "./components/Ship/Ship"
+import { OrbitControls } from "@react-three/drei"
+import { Blob } from "./components/Blob/Blob"
 
 export const ShadersGallery = () => {
 
     return (
         <>
-            <Experience />
+            <OrbitControls
+                maxPolarAngle={1.45}
+            />
+            {/* <Experience /> */}
             <color args={[0, 0, 0]} attach="background" />
-            <Ship />
+            <Blob />
+            {/* <Ship /> */}
         </>
     )
 }
