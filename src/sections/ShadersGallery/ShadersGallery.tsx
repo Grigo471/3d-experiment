@@ -1,5 +1,5 @@
+import { ParticlesLoop } from "./components/ParticlesLoop/ParticlesLoop"
 import { OrbitControls } from "@react-three/drei"
-import { Blob } from "./components/Blob/Blob"
 
 export const ShadersGallery = () => {
 
@@ -10,7 +10,8 @@ export const ShadersGallery = () => {
             />
             {/* <Experience /> */}
             <color args={[0, 0, 0]} attach="background" />
-            <Blob />
+            {/* <Blob /> */}
+            <ParticlesLoop />
             {/* <Ship /> */}
         </>
     )
